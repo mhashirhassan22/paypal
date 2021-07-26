@@ -1,7 +1,7 @@
 ---
-product_id: video-store-demo-product5
-name: "Montly Plan"
-description: "Montly subscription"
+product_id: membership-essential-01
+name: "Monthly Plan"
+description: "Monthly subscription"
 billing_cycles:
   - frequency:
       interval_unit: "MONTH"

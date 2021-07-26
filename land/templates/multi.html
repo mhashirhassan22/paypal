@@ -1,0 +1,54 @@
+{% extends 'land/base.html' %}
+
+{% block central_content %}
+
+<h1>The input multiple attribute</h1>
+{% csrf_token %}
+<p>Try selecting more than one file when browsing for files.</p>
+
+<form action="/action_page.php">
+  <label for="files">Select files:</label>
+  <input type="file" id="files" name="files" multiple accept="image/*"><br><br>
+  <button type="button" onclick="multiFiles();">Submit</button>
+
+</form>
+<p id="img1"></p>
+
+<script>
+    function multiFiles(){
+        var files = document.getElementById('files').files; 
+        for (var i = 0, f; f = files[i]; i++) {
+
+            var reader = new FileReader();
+            var csrf_token = $('[name="csrfmiddlewaretoken"]').val();
+            var t = window.URL || window.webkitURL;
+            var objectUrl = t.createObjectURL(f);
+
+            reader.onload = function (e) {
+                console.log(objectUrl);
+                $.ajax({
+                    url: "/testing/",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': csrf_token,
+                        'img': JSON.stringify(objectUrl)
+            
+                    },
+                    success: function(data) {
+                        if (data["img"]){
+                            document.getElementById("img1").innerHTML = "<img src='${data['img']}' alt='not found'>";
+                        }
+                        else 
+                        {
+                            "OOPS! SOMETHING WENT WRONG"
+                        }
+                    }
+                });
+            };
+
+            reader.readAsDataURL(f);
+
+        }
+    }
+</script>
+{% endblock central_content %}

@@ -5,7 +5,8 @@ from django.urls import path, include
 from land import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.indexx, name='index'),
+    path('testing/', views.testing, name='testing'),
     path('video/<int:id>/', views.video, name='video'),
     path('about', views.about, name='about'),
     path('upgrade', views.upgrade, name='upgrade'),

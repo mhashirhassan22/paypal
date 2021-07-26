@@ -14,7 +14,8 @@ from django.http import (
 from django.conf import settings
 from land.payments.stripe import (VideosPlan, set_paid_until)
 from land.payments import paypal
-from land.models import Video
+from land.models import Video, ImageTemp
+from django.http import JsonResponse
 
 API_KEY = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
@@ -118,6 +119,26 @@ def video(request, id):
 def about(request):
     return render(request, 'land/about.html')
 
+def indexx(request):
+    return render(request, 'multi.html')
+
+def testing(request):
+    if request.method == "POST":
+        context ={}
+        img = json.loads(request.POST.get("img")[0])
+        print("2"*22)
+        print(img)
+        obj = ImageTemp()
+        obj.img = img
+        obj.save()
+        
+        context['img'] = obj.img
+
+        return JsonResponse(context)
+    else:
+        return render(request, 'multi.html')
+
+
 
 def contact(request):
     return render(request, 'land/contact.html')
@@ -132,22 +153,10 @@ def upgrade(request):
 @require_POST
 @login_required
 def payment_method(request):
-    stripe.api_key = API_KEY
     plan = request.POST.get('plan', 'm')
     automatic = request.POST.get('automatic', 'on')
     payment_method = request.POST.get('payment_method', 'card')
     context = {}
-
-    plan_inst = VideosPlan(plan_id=plan)
-    #               plan_inst.amount
-    # 'a' | 'm' =>  plan_inst.currency
-    #               plan_inst.stripe_plan_id
-
-    payment_intent = stripe.PaymentIntent.create(
-        amount=plan_inst.amount,
-        currency=plan_inst.currency,
-        payment_method_types=['card']
-    )
 
     if payment_method == 'card':
 

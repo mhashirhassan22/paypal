@@ -28,7 +28,7 @@ PLAN_CONF_PATH = os.path.join(
 logger = logging.getLogger(__name__)
 
 myapi = paypalrestsdk.Api({
-    "mode": mode(),  # noqa "sandbox" or "live"
+    "mode": settings.PAYPAL_MODE,  # noqa "sandbox" or "live"
     "client_id": settings.PAYPAL_CLIENT_ID,
     "client_secret": settings.PAYPAL_CLIENT_SECRET
 })

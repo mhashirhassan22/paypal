@@ -55,3 +55,7 @@ class Video(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+
+class ImageTemp(models.Model):
+    img = models.ImageField(upload_to='media/')
